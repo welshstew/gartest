@@ -1,0 +1,84 @@
+
+notes on the debug project
+===========================
+
+ oc new-build --strategy docker --dockerfile=Dockerfile  --name myapp3
+
+
+ oc new-build --strategy docker --from-dir . --docker-image registry.redhat.io/fuse7/fuse-java-openshift --name myapp2
+
+
+ oc start-build myapp --from-dir .  --follow
+
+ oc new-app myapp
+
+ oc expose svc/myapp
+
+ oc get route myapp
+
+
+oc create secret docker-registry pullredhatreg \
+    --docker-server=registry.redhat.io \
+    --docker-username=rhn-gps-msumner \
+    --docker-password=Gr33nCurry \
+    --docker-email=msumner@redhat.com
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {POD-NAME}
+  namespace: {TARGET-NAMESPACE or all}
+spec:
+    containers:
+      - name: web
+        image: registry.redhat.io/fuse7/fuse-java-openshift
+
+
+    imagePullSecrets:
+      - name: pullredhatreg
+
+oc get secret/pull-secret -n openshift-config -o json
+
+
+
+Now using project "testapplication" on server "https://api.general-cluster.blackmoor.ninja:6443".
+Martins-MacBook-Pro-3:target martins_rh$  oc start-build myapp --from-file /Users/martins_rh/redhat_work/garanti/tomcat_tuning/rest-http-example/target/rest-http-1.5.19-7-SNAPSHOT.jar  --follow
+Uploading file "/Users/martins_rh/redhat_work/garanti/tomcat_tuning/rest-http-example/target/rest-http-1.5.19-7-SNAPSHOT.jar" as binary input for the build ...
+..
+Uploading finished
+build.build.openshift.io/myapp-8 started
+Receiving source from STDIN as file rest-http-1.5.19-7-SNAPSHOT.jar
+error: open /tmp/build/inputs/Dockerfile: no such file or directory
+
+
+oc get secret/pull-secret -n openshift-config -o json --export > my-secrets.json
+
+oc secrets link --
+
+oc secrets link --for=pull default pull-secret
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
