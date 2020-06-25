@@ -17,9 +17,9 @@ WORKDIR /opt/app
 
 USER root
 
-RUN subscription-manager repos --enable "rhel-*-optional-rpms" --enable "rhel-*-extras-rpms"
-
 RUN yum -y install wget unzip
+
+USER 1001
 
 RUN wget https://www.yourkit.com/download/docker/YourKit-JavaProfiler-2019.8-docker.zip -P /tmp/ && \
   unzip /tmp/YourKit-JavaProfiler-2019.8-docker.zip -d /usr/local && \
